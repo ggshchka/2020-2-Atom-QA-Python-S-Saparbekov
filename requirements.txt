@@ -1,1 +1,5 @@
 pytest
+selenium
+webdriver-manager
+pytest-xdist
+pylint
