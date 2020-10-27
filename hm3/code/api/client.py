@@ -8,10 +8,6 @@ class ResponseStatusCodeException(Exception):
     pass
 
 
-class RequestErrorException(Exception):
-    pass
-
-
 class MyTargetClient:
 
     def __init__(self, user, password):
@@ -37,11 +33,6 @@ class MyTargetClient:
 
         if json:
             json_response = response.json()
-
-            if json_response.get('bStateError'):
-                error = json_response['sErrorMsg']
-                raise RequestErrorException(f'Request "{url}" dailed '
-                                            f'with error "{error}"!')
             return json_response
         return response
 
@@ -109,6 +100,17 @@ class MyTargetClient:
 
     def get_segment_id(self, response):
         return response['id']
+
+    def empty_segment_list(self, id):
+        location = 'api/v2/coverage/segment.json'
+        emp_resp = self._request(
+            method='GET',
+            location=location,
+            params={'id': id},
+            json=True,
+        )
+        return emp_resp
+
 
     def delete_segment(self, id):
         location = 'https://target.my.com/api/v2/remarketing/segments/'+str(id)+'.json'
